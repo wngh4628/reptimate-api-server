@@ -1,0 +1,55 @@
+/// <reference types="multer" />
+import { DiaryListDto } from './dtos/diary-list.dto';
+import { DiaryRepository } from './repositories/diary.repository';
+import { UpdatePetDto } from './dtos/pet-update.dto';
+import { PetRepository } from './repositories/pet.repository';
+import { CreateDiaryDto } from './dtos/create-diary.dto';
+import { CreatePetDto } from './dtos/create-pet.dto';
+import { UpdateDiaryDto } from './dtos/update-diary.dto';
+import { Pet } from './entities/pet.entity';
+import { Page, PageRequest } from 'src/core/page';
+import { Diary } from './entities/diary.entity';
+import { DiaryImage } from './entities/diary-image.entity';
+import { DiaryImageRepository } from './repositories/diary-image.repository';
+import { CreatePetWeightDto } from './dtos/create-pet-weight.dto';
+import { PetWeight } from './entities/pet-weight.entity';
+import { PetWeightRepository } from './repositories/pet-weight.repository';
+import { PetWeightListDto } from './dtos/pet-weight-list.dto';
+import { UpdatePetWeightDto } from './dtos/update-pet-weight.dto';
+import { PetWeightPageRequest } from './dtos/pet-weight-page';
+import { PetListDto } from './dtos/pet-list.dto';
+import { UserRepository } from '../user/repositories/user.repository';
+export declare class DiaryService {
+    private userRepository;
+    private petRepository;
+    private diaryRepository;
+    private diaryImageRepository;
+    private petWeightRepository;
+    constructor(userRepository: UserRepository, petRepository: PetRepository, diaryRepository: DiaryRepository, diaryImageRepository: DiaryImageRepository, petWeightRepository: PetWeightRepository);
+    createPet(dto: CreatePetDto, userIdx: number, file: Express.Multer.File): Promise<Pet>;
+    findAllPets(userIdx: number, pageRequest: PageRequest): Promise<Page<PetListDto>>;
+    updatePet(petIdx: number, dto: UpdatePetDto, file: Express.Multer.File): Promise<Pet>;
+    removePet(petIdx: number): Promise<void>;
+    uploadImageToS3(file: Express.Multer.File, folder: string): Promise<string>;
+    createDiary(petIdx: number, dto: CreateDiaryDto, files: Array<Express.Multer.File>): Promise<Diary>;
+    findAllDiaries(petIdx: number, pageRequest: PageRequest): Promise<Page<DiaryListDto>>;
+    findDiary(petIdx: number, diaryIdx: number): Promise<Diary>;
+    updateDiary(diaryIdx: number, dto: UpdateDiaryDto, files: Array<Express.Multer.File>): Promise<{
+        images: DiaryImage[];
+        title: string;
+        content: string;
+        petIdx: number;
+        pet: Pet;
+        idx: number;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date;
+    }>;
+    removeDiary(diaryIdx: number): Promise<void>;
+    uploadDiaryImages(files: Express.Multer.File[], diaryIdx: number): Promise<DiaryImage[]>;
+    deleteDiaryImages(images: DiaryImage[]): Promise<void>;
+    createPetWeight(petIdx: number, dto: CreatePetWeightDto): Promise<PetWeight>;
+    findPetWeights(petIdx: number, pageRequest: PetWeightPageRequest): Promise<any[] | Page<PetWeightListDto>>;
+    updatePetWeight(weightIdx: number, dto: UpdatePetWeightDto): Promise<PetWeight>;
+    removePetWeight(weightIdx: number): Promise<void>;
+}
